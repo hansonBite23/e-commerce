@@ -66,7 +66,7 @@ session_start();
                     foreach ($items as $item) {
                     ?>
                         <div class=" col-xs-12 col-md-6 col-lg-3">
-                            <div class="card p-3 mb-3" idNum='<?php echo $item['id']; ?>' style="width: 240px;">
+                            <div class="card p-3 mb-3" idNum='<?php echo $item['id']; ?>' class="mx-auto" height="144" width="144">
                                 <img src="<?php echo $item['img']; ?>" alt="<?php echo $item['img']; ?>">
                                 <div class="card-body text-center">
                                     <h5><?php echo $item['name']; ?></h5>
@@ -135,7 +135,7 @@ session_start();
                     ?>
                         <div class=" col-xs-12 col-md-6 col-lg-3">
                             <div class="card p-3 mb-3" idNum='<?php echo $item['id']; ?>' style="width: 240px;">
-                                <img src="<?php echo $item['img']; ?>">
+                                <img src="<?php echo $item['img']; ?>" class="mx-auto" height="144" width="144">
                                 <div class="card-body text-center">
                                     <h5><?php echo $item['name']; ?></h5>
                                     <p>Php. <?php echo $item['price']; ?></p>
