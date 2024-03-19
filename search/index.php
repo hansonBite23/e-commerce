@@ -95,8 +95,6 @@ $search =  $_GET['search'];
                 } else {
                     foreach ($rows as $row) {
                 ?>
-
-
                         <div class=" col-xs-12 col-md-6 col-lg-3">
                             <div class="card p-3 mb-3" style="width: 240px;">
                                 <img src="../<?php echo $row['img']; ?>" class="mx-auto" height="144" width="144">
