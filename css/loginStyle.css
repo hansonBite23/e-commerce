@@ -1,0 +1,41 @@
+form {
+  padding: 10%;
+}
+
+.container {
+  position: relative;
+
+  margin-top: 50%;
+  width: 100%;
+  padding: 20px;
+  font-size: 15px;
+}
+
+th.title {
+  color: #fff;
+}
+
+.user-profile-pic {
+  width: auto;
+  height: 50%;
+}
+
+.field-error {
+  animation: shake 0.2s ease-in-out 0s 2;
+  color: red;
+}
+
+@keyframes shake {
+  0% {
+    margin-left: 0rem;
+  }
+  25% {
+    margin-left: 0.5rem;
+  }
+  75% {
+    margin-left: -0.5rem;
+  }
+  100% {
+    margin-left: 0rem;
+  }
+}
