@@ -44,7 +44,7 @@ session_start();
 
                         </ul>
                     </div>
-                    <a href="cart/" type="button" class="btn btn-danger mx-3"><i class="bi bi-cart3"></i></a>
+                    <a href="" type="button" class="btn btn-danger mx-3"><i class="bi bi-cart3"></i></a>
 
                 </div>
             </div>
