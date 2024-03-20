@@ -13,26 +13,46 @@ class ListItem
 
     public function addToCart($item_id, $qty)
     {
-        //echo $item_id . $qty;
-
         include 'connection.php';
-        $sql = 'INSERT  INTO `cart`(`item_id`, `quantity`)
-                VALUES (' . $item_id . ',' . $qty . ')';
-        $result =  mysqli_query($con, $sql);
 
-        if ($result === true) {
-            echo 'Added to Cart';
+        $sqlSelect = "SELECT SUM(quantity) AS total_quantity FROM cart WHERE item_id = $item_id";
+        $result = mysqli_query($con, $sqlSelect);
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            $existingQuantity = $row['total_quantity'];
+
+            // Check if adding the new quantity will exceed 10
+            $totalQuantity = $existingQuantity + $qty;
+
+            if ($totalQuantity >= 10) {
+
+                echo  "Alert: Quantity exceeds 10. Cannot add to cart";
+            } else {
+
+                $sqlInsert = "INSERT INTO cart (item_id, quantity) VALUES ($item_id, $qty)";
+                $insertResult = mysqli_query($con, $sqlInsert);
+
+                if ($insertResult) {
+                    echo "Item added to cart successfully.";
+                } else {
+                    echo "Error: " . mysqli_error($con);
+                }
+            }
         } else {
-            return "Wrong";
+            echo "Error: " . mysqli_error($con);
         }
+
+        // Close the database connection
+        mysqli_close($con);
     }
 
     public function showCartItems()
     {
         include 'connection.php';
-        $sql = 'SELECT DISTINCT items.name, cart.id, cart.item_id, items.price, quantity, quantity*items.price AS totalAmount 
-        FROM cart
-        LEFT JOIN items ON cart.item_id = items.id;';
+        $sql = 'SELECT cart.id, cart.item_id,items.name, SUM(cart.quantity) AS total_quantity, items.price, SUM(cart.quantity * items.price) AS totalAmount 
+        FROM cart 
+        LEFT JOIN items ON cart.item_id = items.id 
+        GROUP BY items.name;';
         $result =  mysqli_query($con, $sql);
         return $result;
     }
@@ -40,10 +60,11 @@ class ListItem
     public function getCartId($id)
     {
         include 'connection.php';
-        $sql = 'SELECT  items.name, cart.id, cart.item_id, items.price, cart.quantity
+        $sql = "SELECT items.name, cart.id, cart.item_id, items.price,SUM(quantity) as total_quantity, quantity*items.price AS totalAmount 
         FROM cart
         LEFT JOIN items ON cart.item_id = items.id 
-        WHERE cart.id = ' . $id;
+        WHERE items.id = '$id' 
+        GROUP BY items.name";
         $result =  mysqli_query($con, $sql);
         $rows = mysqli_fetch_assoc($result);
         $cartId = json_encode($rows);
@@ -53,11 +74,32 @@ class ListItem
     public function updateQuantity($id, $qty)
     {
         include 'connection.php';
-        $sql = 'UPDATE `cart` SET `quantity`=' . $qty . ' WHERE id = ' . $id;
-        $result =  mysqli_query($con, $sql);
-        if ($result === true) {
-            echo "Quantity Updated";
+        // Get the current quantity from the cart table
+        $sqlSelect = "SELECT quantity FROM cart WHERE id = $id";
+        $result = mysqli_query($con, $sqlSelect);
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            $currentQty = $row['quantity'];
+
+            // Calculate the new total quantity
+            $totalQty = $currentQty + $newQty;
+
+            // Update the quantity in the cart table
+            $sqlUpdate = "UPDATE cart SET quantity = $totalQty WHERE id = $id";
+            $updateResult = mysqli_query($con, $sqlUpdate);
+
+            if ($updateResult) {
+                echo "Quantity updated successfully.";
+            } else {
+                echo "Error updating quantity: " . mysqli_error($con);
+            }
+        } else {
+            echo "Record not found.";
         }
+
+        // Close the database connection
+        mysqli_close($con);
     }
 
     public function deleteCartId($id)
