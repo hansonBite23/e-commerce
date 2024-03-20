@@ -192,6 +192,7 @@ session_start();
                     let newQty = $('.qtySelect').val();
                     let id = $('#item-id').val();
                     console.log(newQty);
+                    console.log(id);
                     $.ajax({
                         type: "post",
                         url: "../cart.php",
@@ -202,7 +203,7 @@ session_start();
                         },
                         success: function(response) {
                             location.reload();
-                            $('#update-quantity')[0].reset();
+                            //  $('#update-quantity')[0].reset();
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
                             alert(xhr.status);

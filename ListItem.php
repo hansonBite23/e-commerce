@@ -15,36 +15,72 @@ class ListItem
     {
         include 'connection.php';
 
-        $sqlSelect = "SELECT SUM(quantity) AS total_quantity FROM cart WHERE item_id = $item_id";
+        // $sqlSelect = "SELECT SUM(quantity) AS total_quantity FROM cart WHERE item_id = $item_id";
+        // $result = mysqli_query($con, $sqlSelect);
+        // if ($result) {
+        //     $row = mysqli_fetch_assoc($result);
+        //     $existingQuantity = $row['total_quantity'];
+
+        //     // Check if adding the new quantity will exceed 10
+        //     $totalQuantity = $existingQuantity + $qty;
+
+        //     if ($totalQuantity >= 10) {
+
+        //         echo  "Alert: Quantity exceeds 10. Cannot add to cart";
+        //     } else {
+
+        //         $sqlInsert = "INSERT INTO cart (item_id, quantity) VALUES ($item_id, $qty)";
+        //         $insertResult = mysqli_query($con, $sqlInsert);
+
+        //         if ($insertResult) {
+        //             echo "Item added to cart successfully.";
+        //         } else {
+        //             echo "Error: " . mysqli_error($con);
+        //         }
+        //     }
+        // } else {
+        //     echo "Error: " . mysqli_error($con);
+        // }
+        $sqlSelect = "SELECT SUM(quantity) AS total_quantity, item_id FROM cart WHERE item_id = $item_id";
         $result = mysqli_query($con, $sqlSelect);
-        if ($result) {
+
+        if ($result && mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             $existingQuantity = $row['total_quantity'];
-
+            $currentItemId = $row['item_id'];
             // Check if adding the new quantity will exceed 10
             $totalQuantity = $existingQuantity + $qty;
 
             if ($totalQuantity >= 10) {
-
-                echo  "Alert: Quantity exceeds 10. Cannot add to cart";
+                echo 'exceed';
             } else {
 
-                $sqlInsert = "INSERT INTO cart (item_id, quantity) VALUES ($item_id, $qty)";
-                $insertResult = mysqli_query($con, $sqlInsert);
-
-                if ($insertResult) {
-                    echo "Item added to cart successfully.";
+                if ($currentItemId === $item_id) {
+                    $sqlInsert = "UPDATE  cart SET `quantity`= $totalQuantity 
+                    WHERE `item_id`= $item_id";
+                    $insertResult = mysqli_query($con, $sqlInsert);
+                    if ($insertResult) {
+                        echo "Item added to cart successfully.";
+                    } else {
+                        echo "Error: " . mysqli_error($con);
+                    }
                 } else {
-                    echo "Error: " . mysqli_error($con);
+                    $sqlInsert = "INSERT INTO cart (item_id, quantity) VALUES ($item_id, $qty)";
+                    $insertResult = mysqli_query($con, $sqlInsert);
+
+                    if ($insertResult) {
+                        echo "Item added to cart successfully.";
+                    } else {
+                        echo "Error: " . mysqli_error($con);
+                    }
                 }
             }
-        } else {
-            echo "Error: " . mysqli_error($con);
-        }
 
-        // Close the database connection
-        mysqli_close($con);
+            // Close the database connection
+            mysqli_close($con);
+        }
     }
+
 
     public function showCartItems()
     {
@@ -74,32 +110,41 @@ class ListItem
     public function updateQuantity($id, $qty)
     {
         include 'connection.php';
-        // Get the current quantity from the cart table
-        $sqlSelect = "SELECT quantity FROM cart WHERE id = $id";
-        $result = mysqli_query($con, $sqlSelect);
-
-        if ($result && mysqli_num_rows($result) > 0) {
-            $row = mysqli_fetch_assoc($result);
-            $currentQty = $row['quantity'];
-
-            // Calculate the new total quantity
-            $totalQty = $currentQty + $newQty;
-
-            // Update the quantity in the cart table
-            $sqlUpdate = "UPDATE cart SET quantity = $totalQty WHERE id = $id";
-            $updateResult = mysqli_query($con, $sqlUpdate);
-
-            if ($updateResult) {
-                echo "Quantity updated successfully.";
-            } else {
-                echo "Error updating quantity: " . mysqli_error($con);
-            }
+        $sqlUpdate = "UPDATE cart SET quantity = $qty WHERE id = $id";
+        $updateResult = mysqli_query($con, $sqlUpdate);
+        if ($updateResult) {
+            echo "Quantity updated successfully.";
         } else {
-            echo "Record not found.";
+            echo "Error updating quantity: " . mysqli_error($con);
         }
 
         // Close the database connection
         mysqli_close($con);
+        // //Get the current quantity from the cart table
+        // $sqlSelect = "SELECT quantity FROM cart WHERE id = $id";
+        // $result = mysqli_query($con, $sqlSelect);
+
+        // if ($result && mysqli_num_rows($result) > 0) {
+        //     $row = mysqli_fetch_assoc($result);
+        //     $currentQty = $row['quantity'];
+
+        //     // Calculate the new total quantity
+        //     $totalQty = $currentQty + $newQty;
+
+        //     // Update the quantity in the cart table
+        //     $sqlUpdate = "UPDATE cart SET quantity = $totalQty WHERE id = $id";
+        //     $updateResult = mysqli_query($con, $sqlUpdate);
+
+        //     if ($updateResult) {
+        //         echo "Quantity updated successfully.";
+        //     } else {
+        //         echo "Error updating quantity: " . mysqli_error($con);
+        //     }
+        // } else {
+        //     echo "Record not found.";
+        // }
+        // // Close the database connection
+        // mysqli_close($con);
     }
 
     public function deleteCartId($id)

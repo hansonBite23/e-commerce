@@ -55,6 +55,8 @@ session_start();
         <div class="container">
             <div class="alert alert-primary addSuccess" role="alert">
             </div>
+            <div class="alert alert-danger exceed" role="alert">
+            </div>
             <div class="col-md-12 m-3">
                 <div class="row grid">
                     <?php
@@ -173,7 +175,7 @@ session_start();
         $(document).ready(function() {
 
             $('.addSuccess').hide();
-
+            $('.exceed').hide();
             $('.addToCart').click(function(e) {
                 e.preventDefault();
 
@@ -201,8 +203,11 @@ session_start();
                     },
 
                     success: function(response) {
-                        $('.addSuccess').show().html(response);
-                        //alert(response);
+                        if (response === 'exceed') {
+                            $('.exceed').show().html("Exceeded to 10");
+                        } else {
+                            $('.addSuccess').show().html(response);
+                        } //alert(response);
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr.responseText);
