@@ -66,14 +66,14 @@ session_start();
                     foreach ($items as $item) {
                     ?>
                         <div class=" col-xs-12 col-md-6 col-lg-3">
-                            <div class="card p-3 mb-3" idNum='<?php echo $item['id']; ?>' class="mx-auto" height="144" width="144">
-                                <img src="<?php echo $item['img']; ?>" alt="<?php echo $item['img']; ?>">
+                            <div class="card p-3 mb-3" idNum='<?php echo $item['id']; ?>' style="width: 240px;">
+                                <img src="<?php echo $item['img']; ?>" alt="<?php echo $item['img']; ?>" class="mx-auto" height="144" width="144">
                                 <div class="card-body text-center">
                                     <h5><?php echo $item['name']; ?></h5>
                                     <p>Php. <?php echo $item['price']; ?></p>
                                     <button class="btn btn-success addToCart" itemNumber="<?php echo $item['id']; ?>">Add To Cart</button>
                                     <label for="qty">Quantity:</label>
-                                    <select name="qty" class="qtySelect">
+                                    <select name="qty" class="qtySelect m-3">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -141,7 +141,7 @@ session_start();
                                     <p>Php. <?php echo $item['price']; ?></p>
                                     <a href="login/" class="btn btn-success">Add to Cart</a>
                                     <label for="qty">Quantity:</label>
-                                    <select name="qty" class="qtySelect">
+                                    <select name="qty" class="qtySelect m-3">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
