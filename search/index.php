@@ -12,7 +12,7 @@ $search =  $_GET['search'];
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/style.css">
 
 </head>
 
@@ -46,7 +46,7 @@ $search =  $_GET['search'];
 
                         </ul>
                     </div>
-                    <a href="../login" type="button" class="btn btn-danger mx-3"><i class="bi bi-cart3"></i></a>
+                    <a href="../cart/" type="button" class="btn btn-danger mx-3"><i class="bi bi-cart3"></i></a>
 
                 </div>
             </div>
