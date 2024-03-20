@@ -83,15 +83,15 @@ session_start();
 
                             <td>
                                 <div class="origQuantity">
-                                    <?php echo $cart['quantity']; ?>
+                                    <?php echo $cart['total_quantity']; ?>
                                 </div>
 
                             </td>
                             <td>Php. <?php echo $cart['totalAmount']; ?></td>
                             <td>
 
-                                <button class="btn btn-warning changeQuantity" id="<?php echo $cart['id']; ?>" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit Quantity</button>
-                                <button class="btn btn-danger deleteId" id="<?php echo $cart['id']; ?>">Delete</button>
+                                <button class="btn btn-warning changeQuantity" id="<?php echo $cart['item_id']; ?>" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit Quantity</button>
+                                <button class="btn btn-danger deleteId" id="<?php echo $cart['item_id']; ?>">Delete</button>
                             </td>
                         </tr>
 
@@ -117,13 +117,19 @@ session_start();
                     </div>
                     <div class="modal-body">
                         <form action="" method="post">
-                            <input type="hidden" id="cart-id">
+                            <input type="hidden" id="item-id">
                             <label for="qty">Quantity:</label>
                             <select name="qty" class="qtySelect">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
                                 <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
                             </select>
 
                             <div class="price">
@@ -153,6 +159,7 @@ session_start();
                 $('.changeQuantity').click(function() {
                     //alert('Hello');
                     var id = $(this).attr('id');
+                    //console.log(id);
                     $.ajax({
                         type: "POST",
                         url: "../cart.php",
@@ -162,15 +169,17 @@ session_start();
                         },
                         dataType: "json",
                         success: function(response) {
+                            // console.log(response.total_quantity);
                             //$('.modal-body').html(response);
                             //  console.log(response);
                             let title = response.name;
                             let qty = response.quantity;
                             let id = response.id;
-
+                            let total_quantity = response.total_quantity;
+                            //console.log(response);
                             //Display the value to <select> to class'qtySelect'
-                            $('.qtySelect').val(qty);
-                            $('#cart-id').val(id);
+                            $('.qtySelect').val(total_quantity);
+                            $('#item-id').val(id);
                         }
                     });
                 });
@@ -181,8 +190,8 @@ session_start();
                     // $('#update-quantity')[0].reset();
                     $('#exampleModal').modal('hide');
                     let newQty = $('.qtySelect').val();
-                    let id = $('#cart-id').val();
-
+                    let id = $('#item-id').val();
+                    console.log(newQty);
                     $.ajax({
                         type: "post",
                         url: "../cart.php",
