@@ -19,7 +19,7 @@ session_start();
     <?php
     if (isset($_SESSION['user_id'])) {
     ?>
-
+<!--  -->
         <nav class="navbar navbar-expand-lg ">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/e-commerce/">Shop</a>
