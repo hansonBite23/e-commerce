@@ -31,7 +31,7 @@ session_start();
                         </li>
                     </ul>
 
-                    <form action="search/" method="get" class="d-flex mx-3 my-1" role="search">
+                    <form action="../search/" method="get" class="d-flex mx-3 my-1" role="search">
                         <input name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
@@ -44,7 +44,7 @@ session_start();
 
                         </ul>
                     </div>
-                    <a href="cart/" type="button" class="btn btn-danger mx-3"><i class="bi bi-cart3"></i></a>
+                    <a href="" type="button" class="btn btn-danger mx-3"><i class="bi bi-cart3"></i></a>
 
                 </div>
             </div>
@@ -91,7 +91,7 @@ session_start();
                             <td>
 
                                 <button class="btn btn-warning changeQuantity" id="<?php echo $cart['item_id']; ?>" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit Quantity</button>
-                                <button class="btn btn-danger deleteId" id="<?php echo $cart['item_id']; ?>">Delete</button>
+                                <button class="btn btn-danger deleteId" id="<?php echo $cart['id']; ?>">Delete</button>
                             </td>
                         </tr>
 
@@ -191,8 +191,8 @@ session_start();
                     $('#exampleModal').modal('hide');
                     let newQty = $('.qtySelect').val();
                     let id = $('#item-id').val();
-                    console.log(newQty);
-                    console.log(id);
+                    // console.log(newQty);
+                    // console.log(id);
                     $.ajax({
                         type: "post",
                         url: "../cart.php",
@@ -214,7 +214,7 @@ session_start();
 
                 $(".deleteId").click(function() {
                     let id = $(this).attr('id');
-                    //alert(id);
+                    // alert(id);
 
                     $.ajax({
                         type: "POST",

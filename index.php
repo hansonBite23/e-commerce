@@ -1,5 +1,6 @@
 <?php
 session_start();
+include "ListItem.php";
 ?>
 
 <!doctype html>
@@ -11,6 +12,7 @@ session_start();
     <title>E-Commerce</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <link rel="stylesheet" href="css/style.css">
 
 </head>
@@ -46,22 +48,33 @@ session_start();
 
                         </ul>
                     </div>
-                    <a href="cart/" type="button" class="btn btn-danger mx-3"><i class="bi bi-cart3"></i></a>
+
+                    <a href="cart/" type="button" class="btn btn-danger mx-3 position-relative badge-total"><i class="bi bi-cart3"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            <div class="added-items">
+                                <?php
+                                $count = new ListItem();
+                                $countTotal = $count->totalCartItems();
+                                ?>
+                            </div>
+                            <span class="visually-hidden">unread messages</span>
+                        </span>
+                    </a>
 
                 </div>
             </div>
         </nav>
 
         <div class="container">
-            <div class="alert alert-primary addSuccess" role="alert">
+            <div class="alert alert-primary alert-dismissible fade show addSuccess" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div class="alert alert-danger exceed" role="alert">
+            <div class="alert alert-danger alert-dismissible fade show  exceed" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             <div class="col-md-12 m-3">
                 <div class="row grid">
                     <?php
-                    include 'ListItem.php';
-
                     $list = new ListItem();
                     $items = $list->index();
 
@@ -206,7 +219,9 @@ session_start();
                         if (response === 'exceed') {
                             $('.exceed').show().html("Exceeded to 10");
                         } else {
-                            $('.addSuccess').show().html(response);
+                            $('.addSuccess').show().html(response).fadeOut(1500);
+                            $('span').load(' .added-items');
+
                         } //alert(response);
                     },
                     error: function(xhr, status, error) {

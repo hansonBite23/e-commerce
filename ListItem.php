@@ -11,6 +11,16 @@ class ListItem
         return $result;
     }
 
+
+    public function totalCartItems()
+    {
+        include 'connection.php';
+        $sql = 'SELECT COUNT(*)as `total_count` FROM cart';
+        $result =  mysqli_query($con, $sql);
+        $row = mysqli_fetch_assoc($result);
+        echo $row['total_count'];
+    }
+
     public function addToCart($item_id, $qty)
     {
         include 'connection.php';
