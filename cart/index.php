@@ -71,7 +71,8 @@ session_start();
 
                 <?php
                 $cart = new ListItem();
-                $carts = $cart->showCartItems();
+                $userId = $_SESSION['user_id'];
+                $carts = $cart->showCartItems($userId);
                 foreach ($carts as $cart) {
                 ?>
                     <tbody>
@@ -90,7 +91,7 @@ session_start();
                             <td>Php. <?php echo $cart['totalAmount']; ?></td>
                             <td>
 
-                                <button class="btn btn-warning changeQuantity" id="<?php echo $cart['item_id']; ?>" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit Quantity</button>
+                                <button class="btn btn-warning changeQuantity" id="<?php echo $cart['id']; ?>" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit Quantity</button>
                                 <button class="btn btn-danger deleteId" id="<?php echo $cart['id']; ?>">Delete</button>
                             </td>
                         </tr>
@@ -191,7 +192,7 @@ session_start();
                     $('#exampleModal').modal('hide');
                     let newQty = $('.qtySelect').val();
                     let id = $('#item-id').val();
-                    // console.log(newQty);
+                    //console.log(newQty);
                     // console.log(id);
                     $.ajax({
                         type: "post",

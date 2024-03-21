@@ -14,9 +14,9 @@ if ($action === 'addToCart') {
     $item_id = $_POST['item_id'];
     $qty = $_POST['qty'];
     $action = $_POST['action'];
-
+    $user_id = $_POST['user_id'];
     $addToCart = new ListItem();
-    $addToCart->addToCart($item_id, $qty);
+    $addToCart->addToCart($item_id, $user_id, $qty);
 } elseif ($action === 'getCartId') {
     $id = $_POST['id'];
     include "ListItem.php";

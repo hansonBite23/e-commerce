@@ -21,7 +21,11 @@ include "ListItem.php";
     <?php
     if (isset($_SESSION['user_id'])) {
     ?>
+<<<<<<< HEAD
         <!--  -->
+=======
+        <div class="userID" id="<?php echo $_SESSION['user_id']; ?>"></div>
+>>>>>>> mysql-fix
         <nav class="navbar navbar-expand-lg ">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/e-commerce/">Shop</a>
@@ -54,7 +58,8 @@ include "ListItem.php";
                             <div class="added-items">
                                 <?php
                                 $count = new ListItem();
-                                $countTotal = $count->totalCartItems();
+                                $userId = $_SESSION['user_id'];
+                                $countTotal = $count->totalCartItems($userId);
                                 ?>
                             </div>
                             <span class="visually-hidden">unread messages</span>
@@ -141,8 +146,6 @@ include "ListItem.php";
             <div class="col-md-12 m-3">
                 <div class="row grid">
                     <?php
-                    include 'ListItem.php';
-
                     $list = new ListItem();
                     $items = $list->index();
 
@@ -201,17 +204,18 @@ include "ListItem.php";
 
                 // Get the selected value from the select element
                 var selectedQty = selectElement.val();
-
                 // Get the item ID from the button's 'itemNumber' attribute
                 var itemId = $(this).attr('itemNumber');
 
-
+                var user_id = $('.userID').attr('id');
+                //console.log(user_id);
                 $.ajax({
                     type: "POST",
                     url: "cart.php",
                     data: {
                         item_id: itemId,
                         qty: selectedQty,
+                        user_id: user_id,
                         action: 'addToCart'
                     },
 
@@ -219,7 +223,7 @@ include "ListItem.php";
                         if (response === 'exceed') {
                             $('.exceed').show().html("Exceeded to 10");
                         } else {
-                            $('.addSuccess').show().html(response).fadeOut(1500);
+                            $('.addSuccess').show().html(response);
                             $('span').load(' .added-items');
 
                         } //alert(response);

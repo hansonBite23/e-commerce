@@ -12,16 +12,18 @@ class ListItem
     }
 
 
-    public function totalCartItems()
+    public function totalCartItems($user_id)
     {
         include 'connection.php';
-        $sql = 'SELECT COUNT(*)as `total_count` FROM cart';
+        $sql = "SELECT COUNT(*)as `total_count`
+                FROM `cart`
+                WHERE `userId` = $user_id";
         $result =  mysqli_query($con, $sql);
         $row = mysqli_fetch_assoc($result);
         echo $row['total_count'];
     }
 
-    public function addToCart($item_id, $qty)
+    public function addToCart($item_id, $user_id, $qty)
     {
         include 'connection.php';
 
@@ -51,7 +53,11 @@ class ListItem
         // } else {
         //     echo "Error: " . mysqli_error($con);
         // }
-        $sqlSelect = "SELECT SUM(quantity) AS total_quantity, item_id FROM cart WHERE item_id = $item_id";
+        $sqlSelect = "SELECT SUM(quantity) AS total_quantity, item_id, userId
+        FROM cart 
+        LEFT JOIN user_account ON cart.userId = user_account.user_id 
+        WHERE item_id = $item_id
+        AND userId = $user_id;";
         $result = mysqli_query($con, $sqlSelect);
 
         if ($result && mysqli_num_rows($result) > 0) {
@@ -75,7 +81,7 @@ class ListItem
                         echo "Error: " . mysqli_error($con);
                     }
                 } else {
-                    $sqlInsert = "INSERT INTO cart (item_id, quantity) VALUES ($item_id, $qty)";
+                    $sqlInsert = "INSERT INTO cart (item_id, userId, quantity) VALUES ($item_id, $user_id, $qty)";
                     $insertResult = mysqli_query($con, $sqlInsert);
 
                     if ($insertResult) {
@@ -92,13 +98,15 @@ class ListItem
     }
 
 
-    public function showCartItems()
+    public function showCartItems($user_id)
     {
         include 'connection.php';
-        $sql = 'SELECT cart.id, cart.item_id,items.name, SUM(cart.quantity) AS total_quantity, items.price, SUM(cart.quantity * items.price) AS totalAmount 
+        $sql = "SELECT cart.id, cart.item_id,items.name, SUM(cart.quantity) AS total_quantity, items.price, SUM(cart.quantity * items.price) AS totalAmount 
         FROM cart 
         LEFT JOIN items ON cart.item_id = items.id 
-        GROUP BY items.name;';
+        LEFT JOIN user_account ON cart.userId = user_account.user_id 
+        WHERE userId = $user_id
+        GROUP BY items.name;";
         $result =  mysqli_query($con, $sql);
         return $result;
     }
@@ -109,7 +117,7 @@ class ListItem
         $sql = "SELECT items.name, cart.id, cart.item_id, items.price,SUM(quantity) as total_quantity, quantity*items.price AS totalAmount 
         FROM cart
         LEFT JOIN items ON cart.item_id = items.id 
-        WHERE items.id = '$id' 
+        WHERE cart.id = '$id' 
         GROUP BY items.name";
         $result =  mysqli_query($con, $sql);
         $rows = mysqli_fetch_assoc($result);
@@ -120,7 +128,9 @@ class ListItem
     public function updateQuantity($id, $qty)
     {
         include 'connection.php';
-        $sqlUpdate = "UPDATE cart SET quantity = $qty WHERE id = $id";
+        $sqlUpdate = "UPDATE cart 
+                      SET quantity = $qty 
+                      WHERE id = $id";
         $updateResult = mysqli_query($con, $sqlUpdate);
         if ($updateResult) {
             echo "Quantity updated successfully.";
