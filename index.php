@@ -21,11 +21,8 @@ include "ListItem.php";
     <?php
     if (isset($_SESSION['user_id'])) {
     ?>
-<<<<<<< HEAD
-        <!--  -->
-=======
+
         <div class="userID" id="<?php echo $_SESSION['user_id']; ?>"></div>
->>>>>>> mysql-fix
         <nav class="navbar navbar-expand-lg ">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/e-commerce/">Shop</a>
