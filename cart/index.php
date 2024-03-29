@@ -35,26 +35,47 @@ session_start();
                         <input name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
-                    <div class="dropdown">
+                    <div class="dropdown mx-2">
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                             <?php echo $_SESSION['firstname']; ?>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start" aria-labelledby="dropdownMenuButton1">
                             <li><a class="dropdown-item" href="../logout.php">Logout</a></li>
-
                         </ul>
                     </div>
-                    <a href="" type="button" class="btn btn-danger mx-3"><i class="bi bi-cart3"></i></a>
+                    <div>
+                        <a href="" type="button" class="btn btn-danger mx-3 position-relative badge-total"><i class="bi bi-cart3"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                <div class="added-items">
+                                    <?php
+                                    $count = new ListItem();
+                                    $userId = $_SESSION['user_id'];
+                                    $countTotal = $count->totalCartItems($userId);
+                                    ?>
+                                </div>
+                                <span class="visually-hidden">unread messages</span>
+                            </span>
+                        </a>
+
+                    </div>
 
                 </div>
             </div>
         </nav>
 
         <div class="container">
-            <div class="m-3 text-center">
-                <h2 class="text-center">Cart</h2>
-                <!-- <form name="bulk_action_form" action="delete_submit.php" method="get" /> -->
-                <a href="../" class="btn btn-primary ">Go Back</a>
+            <div class="m-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        <a href="../" class="btn btn-primary">
+                            <i class="bi bi-arrow-left-circle"></i>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3">
+                        <h2 class="text-center">My Cart</h2>
+                    </div>
+                </div>
             </div>
 
             <table class="table" id="data">
@@ -88,11 +109,11 @@ session_start();
                                 </div>
 
                             </td>
-                            <td>Php. <?php echo $cart['totalAmount']; ?></td>
+                            <td id="total-amount">Php. <?php echo $cart['totalAmount']; ?></td>
                             <td>
 
-                                <button class="btn btn-warning changeQuantity" id="<?php echo $cart['id']; ?>" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit Quantity</button>
-                                <button class="btn btn-danger deleteId" id="<?php echo $cart['id']; ?>">Delete</button>
+                                <button class="btn btn-warning changeQuantity" id="<?php echo $cart['id']; ?>" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-danger deleteId" id="<?php echo $cart['id']; ?>"><i class="bi bi-trash3-fill"></i></button>
                             </td>
                         </tr>
 
@@ -157,6 +178,14 @@ session_start();
         <script>
             $(document).ready(function() {
 
+                $("td").each(function() {
+                    var id = $(this).attr("id");
+
+                    console.log(id);
+                });
+
+
+
                 $('.changeQuantity').click(function() {
                     //alert('Hello');
                     var id = $(this).attr('id');
@@ -216,6 +245,7 @@ session_start();
                 $(".deleteId").click(function() {
                     let id = $(this).attr('id');
                     // alert(id);
+
 
                     $.ajax({
                         type: "POST",
