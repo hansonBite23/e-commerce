@@ -72,7 +72,7 @@ session_start();
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary">Log In</button>
                             </div>
-                            <span>Not a member? Register <a href="register.php">here</a></span>
+                            <span>Not a member? Register <a href="../register/">here</a></span>
                     </form>
                 </div>
             </div>

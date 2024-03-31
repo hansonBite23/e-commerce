@@ -94,6 +94,7 @@ session_start();
                 $cart = new ListItem();
                 $userId = $_SESSION['user_id'];
                 $carts = $cart->showCartItems($userId);
+
                 foreach ($carts as $cart) {
                 ?>
                     <tbody>
