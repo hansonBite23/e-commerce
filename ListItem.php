@@ -67,7 +67,7 @@ class ListItem
             // Check if adding the new quantity will exceed 10
             $totalQuantity = $existingQuantity + $qty;
 
-            if ($totalQuantity >= 10) {
+            if ($totalQuantity > 10) {
                 echo 'exceed';
             } else {
 

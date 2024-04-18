@@ -14,6 +14,16 @@ include "ListItem.php";
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .addSuccess {
+            display: none;
+        }
+
+        .exceed {
+            display: none;
+        }
+    </style>
+
 
 </head>
 
@@ -35,55 +45,58 @@ include "ListItem.php";
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
                     </ul>
-
-                    <form action="search/" method="get" class="d-flex mx-3 my-1" role="search">
-                        <input name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <?php echo $_SESSION['firstname']; ?>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="logout.php">Logout</a></li>
-
-                        </ul>
-                    </div>
-
-                    <a href="cart/" type="button" class="btn btn-danger mx-3 position-relative badge-total"><i class="bi bi-cart3"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            <div class="added-items">
-                                <?php
-                                $count = new ListItem();
-                                $userId = $_SESSION['user_id'];
-                                $countTotal = $count->totalCartItems($userId);
-                                ?>
+                    <ul class="navbar-nav">
+                        <form action="search/" method="get" class="d-flex mx-3 my-1" role="search">
+                            <input name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <?php echo $_SESSION['firstname']; ?>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                                </ul>
                             </div>
-                            <span class="visually-hidden">unread messages</span>
-                        </span>
-                    </a>
+                        </li>
 
+                        <li class="nav-item">
+                            <a href="cart/" type="button" class="btn btn-danger mx-3 position-relative badge-total"><i class="bi bi-cart3"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    <div class="added-items">
+                                        <?php
+                                        $count = new ListItem();
+                                        $userId = $_SESSION['user_id'];
+                                        $countTotal = $count->totalCartItems($userId);
+                                        ?>
+                                    </div>
+                                    <span class="visually-hidden"> Cart items</span>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
 
         <div class="container">
-            <div class="alert alert-primary alert-dismissible fade show addSuccess" role="alert">
+            <div class="alert alert-primary alert-dismissible fade show addSuccess " role="alert">
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div class="alert alert-danger alert-dismissible fade show  exceed" role="alert">
+            <div class="alert alert-danger alert-dismissible fade show exceed" role="alert">
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             <div class="col-md-12 m-3">
-                <div class="row grid">
+                <div class="row grid ">
                     <?php
                     $list = new ListItem();
                     $items = $list->index();
 
                     foreach ($items as $item) {
                     ?>
-                        <div class=" col-xs-12 col-md-6 col-lg-3">
-                            <div class="card p-3 mb-3" idNum='<?php echo $item['id']; ?>' style="width: 240px;">
+                        <div class=" col-xs-12 col-md-6 col-lg-3 d-flex justify-content-center">
+                            <div class="card p-3 mb-3 " idNum='<?php echo $item['id']; ?>' style="width: 240px;">
                                 <img src="<?php echo $item['img']; ?>" alt="<?php echo $item['img']; ?>" class="mx-auto" height="144" width="144">
                                 <div class="card-body text-center">
                                     <h5><?php echo $item['name']; ?></h5>
@@ -126,13 +139,20 @@ include "ListItem.php";
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
                     </ul>
+
+
                     <form action="search/" method="get" class="d-flex mx-3 my-1" role="search">
                         <input name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
-                    <a href="login/" type="button" class="btn btn-danger ">Cart</a>
-
-                    <a href="login/" type="button" class="btn btn-primary mx-3">Login</a>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="login/" type="button" class="btn btn-danger">Cart</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="login/" type="button" class="btn btn-primary">Login</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -141,14 +161,14 @@ include "ListItem.php";
             <div class="alert alert-primary addSuccess" role="alert">
             </div>
             <div class="col-md-12 m-3">
-                <div class="row grid">
+                <div class="row grid ">
                     <?php
                     $list = new ListItem();
                     $items = $list->index();
 
                     foreach ($items as $item) {
                     ?>
-                        <div class=" col-xs-12 col-md-6 col-lg-3">
+                        <div class=" col-xs-12 col-md-6 col-lg-3 d-flex justify-content-center">
                             <div class="card p-3 mb-3" idNum='<?php echo $item['id']; ?>' style="width: 240px;">
                                 <img src="<?php echo $item['img']; ?>" class="mx-auto" height="144" width="144">
                                 <div class="card-body text-center">
